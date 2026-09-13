@@ -84,7 +84,7 @@ const AppContent: React.FC = () => {
       )}
 
       {/* View Router with Smooth View Transition */}
-      <main key={currentView} className="flex-1 animate-page-enter">
+      <main key={currentView} className={`flex-1 ${currentView === 'admin' ? '' : 'animate-page-enter'}`}>
         {currentView === 'home' && <HomeView />}
         {currentView === 'shop' && <ShopView />}
         {currentView === 'product' && <ProductDetailView />}

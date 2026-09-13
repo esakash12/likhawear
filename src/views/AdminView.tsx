@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   LayoutDashboard, 
   Package, 
@@ -2913,13 +2914,13 @@ export const AdminView: React.FC = () => {
       </div>
 
       {/* ================= EDIT / ADD PRODUCT MODAL ================= */}
-      {isProductModalOpen && editingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
+      {isProductModalOpen && editingProduct && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 overflow-hidden">
           <div 
             className="fixed inset-0 bg-black/75 backdrop-blur-xs transition-opacity" 
             onClick={() => setIsProductModalOpen(false)}
           />
-          <div className="relative z-10 w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col h-[88vh] max-h-[800px] animate-in zoom-in-95 duration-200">
+          <div className="relative z-10 w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col h-[90vh] max-h-[750px] animate-in zoom-in-95 duration-200 my-auto">
             
             <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between shrink-0">
               <div>
@@ -3536,17 +3537,18 @@ export const AdminView: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ================= LOG TRACKING EVENT MODAL ================= */}
-      {trackingOrderModalId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {trackingOrderModalId && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 overflow-hidden">
           <div 
-            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            className="fixed inset-0 bg-black/75 backdrop-blur-xs transition-opacity" 
             onClick={() => setTrackingOrderModalId(null)}
           />
-          <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl border border-[#EDE9E1] p-6 space-y-4 text-left max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
+          <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl border border-[#EDE9E1] p-6 space-y-4 text-left max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200 my-auto">
               <div className="flex items-center justify-between pb-2 border-b border-[#F2ECE1]">
                 <h3 className="font-serif text-base font-bold text-[#1C1A18]">
                   Log Tracking Milestone (#{trackingOrderModalId})
@@ -3600,7 +3602,7 @@ export const AdminView: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setTrackingOrderModalId(null)}
-                    className="px-3 py-1.5 border border-[#DDD5C7] rounded-lg text-xs"
+                    className="px-3 py-1.5 border border-[#DDD5C7] rounded-lg text-xs cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -3616,27 +3618,28 @@ export const AdminView: React.FC = () => {
                       showToast('Milestone added to order timeline.');
                       setTrackingOrderModalId(null);
                     }}
-                    className="px-4 py-1.5 bg-[#8B2628] hover:bg-[#721E20] text-white rounded-lg text-xs font-bold"
+                    className="px-4 py-1.5 bg-[#8B2628] hover:bg-[#721E20] text-white rounded-lg text-xs font-bold cursor-pointer"
                   >
                     Save Milestone
                   </button>
                 </div>
               </div>
             </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ================= EDIT / ADD CATEGORY MODAL ================= */}
-      {isCategoryModalOpen && editingCategory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+      {isCategoryModalOpen && editingCategory && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 overflow-hidden">
           <div 
-            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            className="fixed inset-0 bg-black/75 backdrop-blur-xs transition-opacity" 
             onClick={() => {
               setIsCategoryModalOpen(false);
               setEditingCategory(null);
             }}
           />
-          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col h-[85vh] max-h-[700px] animate-in zoom-in-95 duration-200">
+          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col h-[90vh] max-h-[700px] animate-in zoom-in-95 duration-200 my-auto">
             {/* Modal Header */}
               <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
@@ -3868,17 +3871,18 @@ export const AdminView: React.FC = () => {
                 </div>
               </div>
             </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ================= ADD NEW STAFF USER MODAL ================= */}
-      {isUserModalOpen && isSuperAdmin && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {isUserModalOpen && isSuperAdmin && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 overflow-hidden">
           <div 
-            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            className="fixed inset-0 bg-black/75 backdrop-blur-xs transition-opacity" 
             onClick={() => setIsUserModalOpen(false)}
           />
-          <div className="relative z-10 w-full max-w-md bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
+          <div className="relative z-10 w-full max-w-md bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200 my-auto">
               <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-[#FAF5EE] text-[#8B2628] flex items-center justify-center">
@@ -3919,7 +3923,7 @@ export const AdminView: React.FC = () => {
                   <input
                     type="email"
                     required
-                    placeholder="staff@zinniabd.com"
+                    placeholder="staff@example.com"
                     value={newStaffEmail}
                     onChange={(e) => setNewStaffEmail(e.target.value)}
                     className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#DDD5C7] rounded-lg text-xs text-[#1C1A18] focus:outline-none focus:border-[#8B2628]"
@@ -3974,7 +3978,8 @@ export const AdminView: React.FC = () => {
                 </div>
               </form>
             </div>
-        </div>
+        </div>,
+        document.body
       )}
 
     </div>

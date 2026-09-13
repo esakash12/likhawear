@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" id="dynamic-favicon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    <title>{{ config('app.name', 'Zinnia Bangladesh - Fashion & Lifestyle') }}</title>
+    <title>{{ config('app.name', 'Likha Wear - Fashion & Lifestyle') }}</title>
     <meta name="description" content="Traditional and modern Bangladeshi fashion online store with complete CMS, products, tracking, and admin control." />
-    <meta property="og:title" content="Zinnia Bangladesh - Fashion & Lifestyle" />
+    <meta property="og:title" content="Likha Wear - Fashion & Lifestyle" />
     <meta property="og:description" content="Traditional and modern Bangladeshi fashion online store with complete CMS, products, tracking, and admin control." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />

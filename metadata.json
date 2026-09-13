@@ -1,0 +1,6 @@
+{
+  "name": "Zinnia Bangladesh - Fashion & Lifestyle",
+  "description": "Traditional and modern Bangladeshi fashion online store with complete CMS, products, tracking, and admin control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

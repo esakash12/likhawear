@@ -1,0 +1,294 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-cinzel: 'Cinzel', serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #FCFBF8;
+    color: #2C2926;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .font-cinzel {
+    font-family: var(--font-cinzel);
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f0eb;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4cfc7;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8B2628;
+}
+
+/* Automated Right-to-Left Continuous Marquee Ticker (Gentle, very slow movement) */
+@keyframes continuous-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-smooth {
+  display: flex;
+  width: max-content;
+  animation: continuous-marquee 75s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-smooth:hover {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   LUXURY SMOOTH ANIMATIONS & MICRO-INTERACTIONS
+   Designed for silky-smooth, fluid motion across all screen sizes
+   ========================================================================== */
+
+/* 1. Backdrop Fade In */
+@keyframes backdropFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-backdrop {
+  animation: backdropFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity;
+}
+
+/* 2. Right Drawer Slide In (Cart, Wishlist) */
+@keyframes drawerSlideRight {
+  0% {
+    transform: translate3d(100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-drawer-right {
+  animation: drawerSlideRight 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+}
+
+/* 3. Left Drawer Slide In (Mobile Navigation Menu) */
+@keyframes drawerSlideLeft {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-drawer-left {
+  animation: drawerSlideLeft 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+}
+
+/* 4. Modal Dialog Pop / Scale */
+@keyframes modalPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-pop {
+  animation: modalPopIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 5. Seamless Page View Transition */
+@keyframes pageEnterGlide {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnterGlide 0.36s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 6. Dropdown & Header Mega Menu Slide & Fade */
+@keyframes dropdownSlideFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-dropdown {
+  animation: dropdownSlideFade 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+/* 7. Toast Floating Notification */
+@keyframes toastSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.95);
+  }
+  70% {
+    transform: translateY(3px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-toast {
+  animation: toastSlideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 8. Accordion / FAQ Expand */
+@keyframes accordionOpen {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-accordion {
+  animation: accordionOpen 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 9. Soft Image Fade / Crossfade for Slider and Product Details */
+@keyframes softCrossfade {
+  0% {
+    opacity: 0.2;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-crossfade {
+  animation: softCrossfade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 10. Shimmer Skeleton Loading */
+@keyframes shimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #F5F1E9 25%, #EBE5DB 50%, #F5F1E9 75%);
+  background-size: 200% 100%;
+  animation: shimmerWave 1.8s infinite;
+}
+
+/* 11. Subtle Float / Pulse for badges & live counters */
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.animate-gentle-pulse {
+  animation: gentlePulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 12. Button Micro-Press & Smooth Lift Effects */
+.btn-press {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-press:active {
+  transform: scale(0.96);
+}
+
+.card-lift {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+.card-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* 13. Tailwind v4 Compatibility Aliases for Animate Utilities */
+.animate-in {
+  animation-duration: 0.28s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: forwards;
+}
+
+.animate-in.fade-in {
+  animation-name: backdropFadeIn;
+}
+
+.animate-in.slide-in-from-right {
+  animation-name: drawerSlideRight;
+  animation-duration: 0.34s;
+}
+
+.animate-in.slide-in-from-left {
+  animation-name: drawerSlideLeft;
+  animation-duration: 0.34s;
+}
+
+.animate-in.slide-in-from-top,
+.animate-in.slide-in-from-top-2 {
+  animation-name: dropdownSlideFade;
+  animation-duration: 0.24s;
+}
+
+.animate-in.zoom-in-95 {
+  animation-name: modalPopIn;
+  animation-duration: 0.28s;
+}
+

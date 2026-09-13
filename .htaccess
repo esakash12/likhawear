@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Block access to hidden files (.env, .git, etc.)
+    RewriteRule ^\..* - [F,L,NC]
+
+    # 2. Block direct access to sensitive framework folders and config files
+    RewriteRule ^composer\.(json|lock) - [F,L,NC]
+    RewriteRule ^package(-lock)?\.json - [F,L,NC]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)/ - [F,L,NC]
+    RewriteRule \.(sqlite|sql|log|md|example)$ - [F,L,NC]
+
+    # 3. Route everything cleanly into the public folder
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

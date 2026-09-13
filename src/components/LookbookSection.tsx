@@ -5,6 +5,7 @@ import { useStore } from '../context/StoreContext';
 export const LookbookSection: React.FC = () => {
   const { cms, setCurrentView, viewCategory } = useStore();
   const lookbook = cms?.lookbook;
+  const brandName = cms?.siteInfo?.brandName || 'Brand';
 
   if (!lookbook) return null;
 
@@ -16,7 +17,7 @@ export const LookbookSection: React.FC = () => {
           {lookbook.eyebrow || 'STYLE GALLERY'}
         </span>
         <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-[#1C1A18] tracking-tight mt-1 mb-2">
-          {lookbook.title || 'Zinnia Lookbook'}
+          {lookbook.title ? lookbook.title.replace(/Zinnia/gi, brandName) : `${brandName} Lookbook`}
         </h2>
         <p className="text-sm text-[#7A7369] max-w-md mx-auto mb-10 sm:mb-12">
           {lookbook.subtitle || 'Style inspiration from our latest collections'}

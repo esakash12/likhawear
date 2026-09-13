@@ -157,7 +157,7 @@ export const AuthModal: React.FC = () => {
           </h3>
           <p className="text-xs text-[#7A7369] mt-1">
             {isRegister 
-              ? 'Join Zinnia for personalized ordering, address book, and loyalty perks'
+              ? `Join ${cms?.siteInfo?.brandName || 'our store'} for personalized ordering, address book, and loyalty perks`
               : 'Enter your credentials to access your account & saved orders'}
           </p>
         </div>

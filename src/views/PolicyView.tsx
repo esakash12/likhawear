@@ -9,13 +9,33 @@ export const PolicyView: React.FC = () => {
   const [contactPhone, setContactPhone] = useState('');
   const [contactMessage, setContactMessage] = useState('');
 
+  const brandName = cms?.siteInfo?.brandName || 'Brand';
+
   const pagesMap: Record<string, { title: string; content: string }> = {
-    aboutUs: { title: 'About Zinnia Bangladesh', content: cms.policies.aboutUs },
-    termsAndConditions: { title: 'Terms & Conditions', content: cms.policies.termsAndConditions },
-    privacyPolicy: { title: 'Privacy & Cookie Policy', content: cms.policies.privacyPolicy },
-    shippingPolicy: { title: 'Shipping & Delivery Policy', content: cms.policies.shippingPolicy },
-    refundPolicy: { title: 'Returns & Refund Policy', content: cms.policies.refundPolicy },
-    contactUs: { title: 'Contact Us & Customer Support', content: cms.policies.contactUs },
+    aboutUs: { 
+      title: `About ${brandName}`, 
+      content: cms.policies?.aboutUs?.replace(/Zinnia/gi, brandName) || '' 
+    },
+    termsAndConditions: { 
+      title: 'Terms & Conditions', 
+      content: cms.policies?.termsAndConditions?.replace(/Zinnia/gi, brandName) || '' 
+    },
+    privacyPolicy: { 
+      title: 'Privacy & Cookie Policy', 
+      content: cms.policies?.privacyPolicy?.replace(/Zinnia/gi, brandName) || '' 
+    },
+    shippingPolicy: { 
+      title: 'Shipping & Delivery Policy', 
+      content: cms.policies?.shippingPolicy?.replace(/Zinnia/gi, brandName) || '' 
+    },
+    refundPolicy: { 
+      title: 'Returns & Refund Policy', 
+      content: cms.policies?.refundPolicy?.replace(/Zinnia/gi, brandName) || '' 
+    },
+    contactUs: { 
+      title: 'Contact Us & Customer Support', 
+      content: cms.policies?.contactUs?.replace(/Zinnia/gi, brandName) || '' 
+    },
   };
 
   const currentPage = pagesMap[selectedPolicy] || pagesMap.aboutUs;

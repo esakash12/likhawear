@@ -10,7 +10,8 @@ import { useStore } from '../context/StoreContext';
 import { ArrowRight } from 'lucide-react';
 
 export const HomeView: React.FC = () => {
-  const { products, setCurrentView } = useStore();
+  const { products, setCurrentView, cms } = useStore();
+  const brandName = cms?.siteInfo?.brandName || 'Brand';
 
   // Filter top selling or featured products
   const topSellingProducts = products.filter(p => p.isTopSelling || p.isFeatured).slice(0, 8);
@@ -71,20 +72,20 @@ export const HomeView: React.FC = () => {
       {/* 6. The Zinnia Standard / Crafted with Love */}
       <ZinniaStandard />
 
-      {/* 7. SEO Brand Story Section (matching video at 00:33) */}
+      {/* 7. SEO Brand Story Section */}
       <section className="py-12 bg-[#FAF7F2] border-t border-[#EDE8E0]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-xs font-bold tracking-[0.2em] text-[#8B2628] uppercase">
-            ABOUT ZINNIA BANGLADESH
+            {cms?.brandStory?.eyebrow?.replace(/Zinnia/gi, brandName) || `ABOUT ${brandName.toUpperCase()} BANGLADESH`}
           </span>
           <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#1C1A18] mt-1 mb-4">
-            Bangladesh's Online Store for Traditional & Modern Fashion Online
+            {cms?.brandStory?.title?.replace(/Zinnia/gi, brandName) || "Bangladesh's Online Store for Traditional & Modern Fashion Online"}
           </h3>
           <p className="text-xs sm:text-sm text-[#6A6359] leading-relaxed mb-4">
-            Zinnia is a Bangladesh-based online clothing brand delivering high-quality sarees, salwar kameez, kurtis, panjabi, and accessories directly to clients all around the country. We celebrate authentic fabrics, comfortable cuts, and timeless styling crafted for modern lives.
+            {cms?.brandStory?.description?.replace(/Zinnia/gi, brandName) || `${brandName} is a Bangladesh-based online clothing brand delivering high-quality sarees, salwar kameez, kurtis, panjabi, and accessories directly to clients all around the country. We celebrate authentic fabrics, comfortable cuts, and timeless styling crafted for modern lives.`}
           </p>
           <p className="text-xs text-[#8C8478] leading-relaxed">
-            Transparent pricing, cash on delivery, fast nationwide delivery, and a straightforward return policy make new collections launch each week on your computer or phone.
+            {cms?.brandStory?.highlight?.replace(/Zinnia/gi, brandName) || "Transparent pricing, cash on delivery, fast nationwide delivery, and a straightforward return policy make new collections launch each week on your computer or phone."}
           </p>
         </div>
       </section>

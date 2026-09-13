@@ -141,7 +141,7 @@ export const AdminView: React.FC = () => {
   };
 
   const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'categories' | 'orders' | 'cms' | 'shipping' | 'coupons' | 'users'>('overview');
-  const [cmsSubTab, setCmsSubTab] = useState<'siteInfo' | 'hero' | 'categories' | 'lookbook' | 'standard' | 'faqs' | 'policies' | 'integrations'>('siteInfo');
+  const [cmsSubTab, setCmsSubTab] = useState<'siteInfo' | 'hero' | 'categories' | 'lookbook' | 'standard' | 'brandStory' | 'faqs' | 'policies' | 'integrations'>('siteInfo');
 
   // Staff role checks
   const isViewer = adminUser?.role === 'viewer';
@@ -1418,11 +1418,12 @@ export const AdminView: React.FC = () => {
             {/* Sub-nav for CMS */}
             <div className="flex overflow-x-auto gap-2 border-b border-[#EDE9E1] pb-3 scrollbar-none">
               {[
-                { id: 'siteInfo', label: 'Store Info & Contacts' },
+                { id: 'siteInfo', label: 'Store Info & Branding' },
                 { id: 'hero', label: 'Hero Slider Banners' },
                 { id: 'categories', label: 'Category Banners' },
                 { id: 'lookbook', label: 'Style Lookbook' },
-                { id: 'standard', label: 'The Zinnia Standard' },
+                { id: 'standard', label: `${cmsDraft?.siteInfo?.brandName || 'Brand'} Standard & Values` },
+                { id: 'brandStory', label: 'Homepage Brand Story' },
                 { id: 'faqs', label: 'FAQs Accordion' },
                 { id: 'policies', label: 'Policy Pages (About, Terms, Returns)' },
                 { id: 'integrations', label: '🔌 API Integrations & Tracking' },
@@ -1465,9 +1466,52 @@ export const AdminView: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-[#4A443D] mb-1">
-                      Brand Name
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-xs font-semibold text-[#4A443D]">
+                        Brand Name
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newBrand = cmsDraft.siteInfo.brandName?.trim() || 'Brand';
+                          updateCmsDraft({
+                            siteInfo: { ...cmsDraft.siteInfo, brandName: newBrand },
+                            zinniaStandard: {
+                              ...cmsDraft.zinniaStandard,
+                              eyebrow: `THE ${newBrand.toUpperCase()} STANDARD`,
+                              title: cmsDraft.zinniaStandard?.title?.includes('Zinnia')
+                                ? `The ${newBrand} Standard`
+                                : (cmsDraft.zinniaStandard?.title || 'Crafted with Love & Tradition'),
+                            },
+                            faqs: {
+                              ...cmsDraft.faqs,
+                              eyebrow: cmsDraft.faqs?.eyebrow || 'FREQUENTLY ASKED QUESTIONS',
+                              title: `Shopping with ${newBrand}`,
+                              items: (cmsDraft.faqs?.items || []).map(item => ({
+                                ...item,
+                                question: item.question.replace(/Zinnia/gi, newBrand),
+                                answer: item.answer.replace(/Zinnia/gi, newBrand),
+                              }))
+                            },
+                            lookbook: {
+                              ...cmsDraft.lookbook,
+                              title: `${newBrand} Lookbook`,
+                            },
+                            brandStory: {
+                              eyebrow: `ABOUT ${newBrand.toUpperCase()} BANGLADESH`,
+                              title: "Bangladesh's Online Store for Traditional & Modern Fashion Online",
+                              description: `${newBrand} is a Bangladesh-based online clothing brand delivering high-quality sarees, salwar kameez, kurtis, panjabi, and accessories directly to clients all around the country. We celebrate authentic fabrics, comfortable cuts, and timeless styling crafted for modern lives.`,
+                              highlight: "Transparent pricing, cash on delivery, fast nationwide delivery, and a straightforward return policy make new collections launch each week on your computer or phone."
+                            }
+                          });
+                          showToast(`Applied "${newBrand}" across Standard, FAQs, Lookbook & Story! Click Save Changes.`);
+                        }}
+                        className="text-[11px] text-[#8B2628] font-bold hover:underline cursor-pointer"
+                        title="Click to automatically update Standard, FAQs, and Story with this brand name"
+                      >
+                        ⚡ Auto-Apply to All Sections
+                      </button>
+                    </div>
                     <input
                       type="text"
                       disabled={isViewer}
@@ -2010,6 +2054,34 @@ export const AdminView: React.FC = () => {
                   </button>
                 </div>
 
+                {/* Section Header Controls */}
+                <div className="p-4 rounded-xl border border-[#EDE9E1] bg-[#FAF8F5] grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <label className="block font-semibold text-[#4A443D] mb-1">Section Eyebrow</label>
+                    <input
+                      type="text"
+                      value={cmsDraft.faqs?.eyebrow || ''}
+                      placeholder="e.g. FREQUENTLY ASKED QUESTIONS"
+                      onChange={(e) => updateCmsDraft({
+                        faqs: { ...cmsDraft.faqs, eyebrow: e.target.value }
+                      })}
+                      className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-semibold text-[#4A443D] mb-1">Section Title (Heading)</label>
+                    <input
+                      type="text"
+                      value={cmsDraft.faqs?.title || ''}
+                      placeholder={`e.g. Shopping with ${cmsDraft.siteInfo.brandName}`}
+                      onChange={(e) => updateCmsDraft({
+                        faqs: { ...cmsDraft.faqs, title: e.target.value }
+                      })}
+                      className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-4">
                   {(cmsDraft.faqs?.items || []).map((faq, fIdx) => (
                     <div key={faq.id} className="p-4 rounded-xl border border-[#EDE9E1] bg-[#FAF8F5] space-y-3">
@@ -2188,24 +2260,163 @@ export const AdminView: React.FC = () => {
                 )}
 
                 {cmsSubTab === 'standard' && (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="space-y-6">
+                    <div className="p-4 rounded-xl border border-[#EDE9E1] bg-[#FAF8F5] space-y-4 text-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block font-semibold text-[#4A443D] mb-1">Section Eyebrow Badge</label>
+                          <input
+                            type="text"
+                            value={cmsDraft.zinniaStandard?.eyebrow || ''}
+                            placeholder={`e.g. THE ${(cmsDraft.siteInfo.brandName || 'BRAND').toUpperCase()} STANDARD`}
+                            onChange={(e) => updateCmsDraft({
+                              zinniaStandard: { ...cmsDraft.zinniaStandard, eyebrow: e.target.value }
+                            })}
+                            className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="block font-semibold text-[#4A443D] mb-1">Section Title</label>
+                          <input
+                            type="text"
+                            value={cmsDraft.zinniaStandard?.title || ''}
+                            placeholder="e.g. Crafted with Love & Tradition"
+                            onChange={(e) => updateCmsDraft({
+                              zinniaStandard: { ...cmsDraft.zinniaStandard, title: e.target.value }
+                            })}
+                            className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                          />
+                        </div>
+                      </div>
                       <div>
-                        <label className="block font-semibold mb-1">Title</label>
+                        <label className="block font-semibold text-[#4A443D] mb-1">Section Description / Subtitle</label>
+                        <textarea
+                          rows={2}
+                          value={cmsDraft.zinniaStandard?.description || ''}
+                          placeholder="Short paragraph describing your brand promise..."
+                          onChange={(e) => updateCmsDraft({
+                            zinniaStandard: { ...cmsDraft.zinniaStandard, description: e.target.value }
+                          })}
+                          className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 4 Feature Cards */}
+                    <div className="space-y-3">
+                      <h4 className="text-xs font-bold text-[#1C1A18] uppercase tracking-wider">
+                        Core Value Feature Cards ({(cmsDraft.zinniaStandard?.features || []).length})
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        {(cmsDraft.zinniaStandard?.features || []).map((feat, fIdx) => (
+                          <div key={feat.id || fIdx} className="p-4 rounded-xl border border-[#EDE9E1] bg-[#FAF8F5] space-y-2">
+                            <span className="font-bold text-[#8B2628] text-[11px]">Card #{fIdx + 1} ({feat.iconName})</span>
+                            <div>
+                              <label className="block text-[11px] font-semibold text-[#4A443D] mb-1">Card Title</label>
+                              <input
+                                type="text"
+                                value={feat.title}
+                                onChange={(e) => {
+                                  const updated = [...(cmsDraft.zinniaStandard?.features || [])];
+                                  updated[fIdx] = { ...updated[fIdx], title: e.target.value };
+                                  updateCmsDraft({
+                                    zinniaStandard: { ...cmsDraft.zinniaStandard, features: updated }
+                                  });
+                                }}
+                                className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[11px] font-semibold text-[#4A443D] mb-1">Card Description</label>
+                              <textarea
+                                rows={2}
+                                value={feat.desc}
+                                onChange={(e) => {
+                                  const updated = [...(cmsDraft.zinniaStandard?.features || [])];
+                                  updated[fIdx] = { ...updated[fIdx], desc: e.target.value };
+                                  updateCmsDraft({
+                                    zinniaStandard: { ...cmsDraft.zinniaStandard, features: updated }
+                                  });
+                                }}
+                                className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {cmsSubTab === 'brandStory' && (
+                  <div className="space-y-4 text-xs">
+                    <div className="p-4 rounded-xl border border-[#EDE9E1] bg-[#FAF8F5] space-y-3">
+                      <div>
+                        <label className="block font-semibold text-[#4A443D] mb-1">Eyebrow Badge</label>
                         <input
                           type="text"
-                          value={cmsDraft.zinniaStandard.title}
-                          onChange={(e) => updateCmsDraft({ zinniaStandard: { ...cmsDraft.zinniaStandard, title: e.target.value } })}
-                          className="w-full p-2 bg-[#FAF8F5] border border-[#DDD5C7] rounded"
+                          value={cmsDraft.brandStory?.eyebrow || ''}
+                          placeholder={`e.g. ABOUT ${(cmsDraft.siteInfo.brandName || 'BRAND').toUpperCase()} BANGLADESH`}
+                          onChange={(e) => updateCmsDraft({
+                            brandStory: {
+                              eyebrow: e.target.value,
+                              title: cmsDraft.brandStory?.title || "Bangladesh's Online Store for Traditional & Modern Fashion Online",
+                              description: cmsDraft.brandStory?.description || "",
+                              highlight: cmsDraft.brandStory?.highlight || ""
+                            }
+                          })}
+                          className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
                         />
                       </div>
                       <div>
-                        <label className="block font-semibold mb-1">Description</label>
+                        <label className="block font-semibold text-[#4A443D] mb-1">Section Title</label>
                         <input
                           type="text"
-                          value={cmsDraft.zinniaStandard.description}
-                          onChange={(e) => updateCmsDraft({ zinniaStandard: { ...cmsDraft.zinniaStandard, description: e.target.value } })}
-                          className="w-full p-2 bg-[#FAF8F5] border border-[#DDD5C7] rounded"
+                          value={cmsDraft.brandStory?.title || ''}
+                          placeholder="e.g. Bangladesh's Online Store for Traditional & Modern Fashion Online"
+                          onChange={(e) => updateCmsDraft({
+                            brandStory: {
+                              eyebrow: cmsDraft.brandStory?.eyebrow || `ABOUT ${(cmsDraft.siteInfo.brandName || 'BRAND').toUpperCase()} BANGLADESH`,
+                              title: e.target.value,
+                              description: cmsDraft.brandStory?.description || "",
+                              highlight: cmsDraft.brandStory?.highlight || ""
+                            }
+                          })}
+                          className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-semibold text-[#4A443D] mb-1">Story Paragraph</label>
+                        <textarea
+                          rows={3}
+                          value={cmsDraft.brandStory?.description || ''}
+                          placeholder="Describe your brand story, craftsmanship, fabrics..."
+                          onChange={(e) => updateCmsDraft({
+                            brandStory: {
+                              eyebrow: cmsDraft.brandStory?.eyebrow || `ABOUT ${(cmsDraft.siteInfo.brandName || 'BRAND').toUpperCase()} BANGLADESH`,
+                              title: cmsDraft.brandStory?.title || "",
+                              description: e.target.value,
+                              highlight: cmsDraft.brandStory?.highlight || ""
+                            }
+                          })}
+                          className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-semibold text-[#4A443D] mb-1">Highlight Note (Footer text)</label>
+                        <textarea
+                          rows={2}
+                          value={cmsDraft.brandStory?.highlight || ''}
+                          placeholder="e.g. Transparent pricing, cash on delivery, fast nationwide delivery..."
+                          onChange={(e) => updateCmsDraft({
+                            brandStory: {
+                              eyebrow: cmsDraft.brandStory?.eyebrow || `ABOUT ${(cmsDraft.siteInfo.brandName || 'BRAND').toUpperCase()} BANGLADESH`,
+                              title: cmsDraft.brandStory?.title || "",
+                              description: cmsDraft.brandStory?.description || "",
+                              highlight: e.target.value
+                            }
+                          })}
+                          className="w-full p-2 bg-white border border-[#DDD5C7] rounded-lg text-xs"
                         />
                       </div>
                     </div>
@@ -2703,9 +2914,12 @@ export const AdminView: React.FC = () => {
 
       {/* ================= EDIT / ADD PRODUCT MODAL ================= */}
       {isProductModalOpen && editingProduct && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs">
-          <div className="min-h-full flex items-center justify-center p-3 sm:p-6 text-center">
-            <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col max-h-[85vh] my-auto animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+          <div 
+            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            onClick={() => setIsProductModalOpen(false)}
+          />
+          <div className="relative z-10 w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
             
             <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between">
               <h3 className="font-serif text-lg font-bold text-[#1C1A18]">
@@ -3314,14 +3528,16 @@ export const AdminView: React.FC = () => {
             </form>
           </div>
         </div>
-      </div>
       )}
 
       {/* ================= LOG TRACKING EVENT MODAL ================= */}
       {trackingOrderModalId && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs">
-          <div className="min-h-full flex items-center justify-center p-4 text-center">
-            <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-[#EDE9E1] p-6 space-y-4 text-left my-auto animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            onClick={() => setTrackingOrderModalId(null)}
+          />
+          <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl border border-[#EDE9E1] p-6 space-y-4 text-left max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
               <div className="flex items-center justify-between pb-2 border-b border-[#F2ECE1]">
                 <h3 className="font-serif text-base font-bold text-[#1C1A18]">
                   Log Tracking Milestone (#{trackingOrderModalId})
@@ -3398,16 +3614,21 @@ export const AdminView: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
         </div>
       )}
 
       {/* ================= EDIT / ADD CATEGORY MODAL ================= */}
       {isCategoryModalOpen && editingCategory && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs">
-          <div className="min-h-full flex items-center justify-center p-3 sm:p-6 text-center">
-            <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col max-h-[85vh] my-auto animate-in zoom-in-95 duration-200">
-              {/* Modal Header */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+          <div 
+            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            onClick={() => {
+              setIsCategoryModalOpen(false);
+              setEditingCategory(null);
+            }}
+          />
+          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+            {/* Modal Header */}
               <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Layers className="w-5 h-5 text-[#8B2628]" />
@@ -3632,15 +3853,17 @@ export const AdminView: React.FC = () => {
                 </div>
               </form>
             </div>
-          </div>
         </div>
       )}
 
       {/* ================= ADD NEW STAFF USER MODAL ================= */}
       {isUserModalOpen && isSuperAdmin && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs">
-          <div className="min-h-full flex items-center justify-center p-4 text-center">
-            <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left my-auto animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            onClick={() => setIsUserModalOpen(false)}
+          />
+          <div className="relative z-10 w-full max-w-md bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
               <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-[#FAF5EE] text-[#8B2628] flex items-center justify-center">
@@ -3736,7 +3959,6 @@ export const AdminView: React.FC = () => {
                 </div>
               </form>
             </div>
-          </div>
         </div>
       )}
 

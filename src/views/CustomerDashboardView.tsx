@@ -409,7 +409,7 @@ export const CustomerDashboardView: React.FC = () => {
               <div>
                 <h4 className="font-serif text-lg font-bold text-[#1C1A18] mb-3 flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-[#8B2628]" />
-                  <span>Zinnia Member Benefits</span>
+                  <span>{cms?.siteInfo?.brandName || 'VIP'} Member Benefits</span>
                 </h4>
                 <ul className="space-y-3 text-xs text-[#5A534A]">
                   <li className="flex items-start gap-2">

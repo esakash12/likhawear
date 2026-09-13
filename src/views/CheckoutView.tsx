@@ -535,7 +535,7 @@ export const CheckoutView: React.FC = () => {
                         type="text"
                         value={couponInput}
                         onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                        placeholder="e.g. ZINNIA10 or SAVE50"
+                        placeholder={`e.g. ${cms?.siteInfo?.brandName ? cms.siteInfo.brandName.replace(/\s+/g, '').toUpperCase() + '10' : 'SAVE10'} or DISCOUNT`}
                         className="flex-1 px-3 py-2 bg-[#FAF8F5] border border-[#DDD5C7] rounded-lg text-xs text-[#1C1A18] uppercase focus:outline-none focus:border-[#8B2628]"
                       />
                       <button

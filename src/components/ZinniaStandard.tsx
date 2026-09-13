@@ -5,8 +5,17 @@ import { useStore } from '../context/StoreContext';
 export const ZinniaStandard: React.FC = () => {
   const { cms } = useStore();
   const standard = cms?.zinniaStandard;
+  const brandName = cms?.siteInfo?.brandName || 'Brand';
 
   if (!standard) return null;
+
+  const eyebrowText = standard.eyebrow 
+    ? standard.eyebrow.replace(/Zinnia/gi, brandName)
+    : `THE ${brandName.toUpperCase()} STANDARD`;
+
+  const titleText = standard.title
+    ? standard.title.replace(/The Zinnia Standard/gi, `The ${brandName} Standard`)
+    : 'Crafted with Love & Tradition';
 
   const iconMap: Record<string, React.ElementType> = {
     ShieldCheck,
@@ -21,10 +30,10 @@ export const ZinniaStandard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Header */}
         <span className="text-xs font-bold tracking-[0.25em] text-[#8B2628] uppercase">
-          {standard.eyebrow || 'OUR PROMISE'}
+          {eyebrowText}
         </span>
         <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-[#1C1A18] tracking-tight mt-1 mb-3">
-          {standard.title || 'The Zinnia Standard'}
+          {titleText}
         </h2>
         <p className="text-sm sm:text-base text-[#7A7369] max-w-2xl mx-auto mb-14 leading-relaxed">
           {standard.description || ''}

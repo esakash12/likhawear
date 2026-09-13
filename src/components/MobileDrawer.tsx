@@ -154,7 +154,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
               onClick={() => { onClose(); viewPolicy('aboutUs'); }}
               className="py-1 cursor-pointer hover:text-[#8B2628]"
             >
-              About Zinnia
+              About {cms?.siteInfo?.brandName || 'Us'}
             </div>
             <div 
               onClick={() => { onClose(); viewPolicy('shippingPolicy'); }}

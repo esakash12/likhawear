@@ -727,6 +727,12 @@ export const INITIAL_CMS: CMSContent = {
       }
     ]
   },
+  brandStory: {
+    eyebrow: "ABOUT OUR BRAND",
+    title: "Bangladesh's Online Store for Traditional & Modern Fashion Online",
+    description: "A Bangladesh-based online clothing brand delivering high-quality sarees, salwar kameez, kurtis, panjabi, and accessories directly to clients all around the country. We celebrate authentic fabrics, comfortable cuts, and timeless styling crafted for modern lives.",
+    highlight: "Transparent pricing, cash on delivery, fast nationwide delivery, and a straightforward return policy make new collections launch each week on your computer or phone."
+  },
   faqs: {
     eyebrow: "FREQUENTLY ASKED QUESTIONS",
     title: "Shopping with Zinnia",

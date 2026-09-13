@@ -1283,6 +1283,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         categoryHighlights: newCMS.categoryHighlights ? { ...prev.categoryHighlights, ...newCMS.categoryHighlights } : prev.categoryHighlights,
         lookbook: newCMS.lookbook ? { ...prev.lookbook, ...newCMS.lookbook } : prev.lookbook,
         zinniaStandard: newCMS.zinniaStandard ? { ...prev.zinniaStandard, ...newCMS.zinniaStandard } : prev.zinniaStandard,
+        brandStory: newCMS.brandStory ? { ...prev.brandStory, ...newCMS.brandStory } : prev.brandStory,
         faqs: newCMS.faqs ? { ...prev.faqs, ...newCMS.faqs } : prev.faqs,
         policies: newCMS.policies ? { ...prev.policies, ...newCMS.policies } : prev.policies,
         shipping: newCMS.shipping ? { ...prev.shipping, ...newCMS.shipping } : prev.shipping,

@@ -172,6 +172,12 @@ export interface CMSContent {
     description: string;
     features: ZinniaFeature[];
   };
+  brandStory?: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    highlight: string;
+  };
   faqs: {
     eyebrow: string;
     title: string;

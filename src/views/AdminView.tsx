@@ -2914,26 +2914,30 @@ export const AdminView: React.FC = () => {
 
       {/* ================= EDIT / ADD PRODUCT MODAL ================= */}
       {isProductModalOpen && editingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
           <div 
-            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity" 
+            className="fixed inset-0 bg-black/75 backdrop-blur-xs transition-opacity" 
             onClick={() => setIsProductModalOpen(false)}
           />
-          <div className="relative z-10 w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+          <div className="relative z-10 w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col h-[88vh] max-h-[800px] animate-in zoom-in-95 duration-200">
             
-            <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between">
-              <h3 className="font-serif text-lg font-bold text-[#1C1A18]">
-                {products.some(p => p.id === editingProduct.id) ? 'Edit Product' : 'Add New Product'}
-              </h3>
+            <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between shrink-0">
+              <div>
+                <h3 className="font-serif text-lg font-bold text-[#1C1A18]">
+                  {products.some(p => p.id === editingProduct.id) ? 'Edit Product' : 'Add New Product'}
+                </h3>
+                <p className="text-[11px] text-[#7A7369]">Configure product details, images, stock, and variations.</p>
+              </div>
               <button
+                type="button"
                 onClick={() => setIsProductModalOpen(false)}
-                className="p-1.5 rounded-full text-[#7A7369] hover:text-[#1C1A18]"
+                className="p-1.5 rounded-full text-[#7A7369] hover:text-[#1C1A18] hover:bg-[#F2ECE1] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveProduct} className="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
+            <form id="product-modal-form" onSubmit={handleSaveProduct} className="flex-1 min-h-0 overflow-y-auto p-6 space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold mb-1 text-[#4A443D]">Product Title *</label>
@@ -3499,33 +3503,38 @@ export const AdminView: React.FC = () => {
                   <span>Top Selling Feature</span>
                 </label>
               </div>
-
-              {/* Modal Actions */}
-              <div className="pt-4 border-t border-[#EDE9E1] flex items-center justify-between">
-                {isViewer ? (
-                  <span className="text-[11px] text-[#E65100] font-semibold flex items-center gap-1">
-                    <Lock className="w-3.5 h-3.5" /> View-Only Mode: You do not have permission to make changes
-                  </span>
-                ) : <span />}
-                <div className="flex justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsProductModalOpen(false)}
-                    className="px-4 py-2 border border-[#DDD5C7] rounded-lg text-xs font-semibold text-[#4A443D]"
-                  >
-                    {isViewer ? 'Close' : 'Cancel'}
-                  </button>
-                  {!isViewer && (
-                    <button
-                      type="submit"
-                      className="px-6 py-2 bg-[#8B2628] hover:bg-[#721E20] text-white rounded-lg text-xs font-bold cursor-pointer"
-                    >
-                      Save Product
-                    </button>
-                  )}
-                </div>
-              </div>
             </form>
+
+            {/* Modal Actions Sticky Footer */}
+            <div className="p-4 sm:p-5 bg-[#FCFBF8] border-t border-[#EDE9E1] flex items-center justify-between shrink-0">
+              {isViewer ? (
+                <span className="text-[11px] text-[#E65100] font-semibold flex items-center gap-1">
+                  <Lock className="w-3.5 h-3.5" /> View-Only Mode: You do not have permission to make changes
+                </span>
+              ) : (
+                <span className="text-[11px] text-[#7A7369]">
+                  💡 Fields marked with * are required
+                </span>
+              )}
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsProductModalOpen(false)}
+                  className="px-4 py-2 border border-[#DDD5C7] hover:bg-[#FAF8F5] rounded-xl text-xs font-semibold text-[#4A443D] cursor-pointer"
+                >
+                  {isViewer ? 'Close' : 'Cancel'}
+                </button>
+                {!isViewer && (
+                  <button
+                    type="submit"
+                    form="product-modal-form"
+                    className="px-6 py-2 bg-[#8B2628] hover:bg-[#721E20] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
+                  >
+                    Save Product
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -3627,9 +3636,9 @@ export const AdminView: React.FC = () => {
               setEditingCategory(null);
             }}
           />
-          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+          <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-[#EDE9E1] overflow-hidden text-left flex flex-col h-[85vh] max-h-[700px] animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
-              <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between">
+              <div className="p-5 bg-[#FCFBF8] border-b border-[#EDE9E1] flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <Layers className="w-5 h-5 text-[#8B2628]" />
                   <h3 className="font-serif text-lg font-bold text-[#1C1A18]">
@@ -3649,7 +3658,7 @@ export const AdminView: React.FC = () => {
               </div>
 
               {/* Modal Form */}
-              <form onSubmit={handleSaveCategory} className="flex-1 overflow-y-auto p-6 space-y-5 text-xs">
+              <form id="category-modal-form" onSubmit={handleSaveCategory} className="flex-1 min-h-0 overflow-y-auto p-6 space-y-5 text-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block font-semibold mb-1 text-[#4A443D]">
@@ -3823,35 +3832,41 @@ export const AdminView: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Modal Actions */}
-                <div className="pt-4 border-t border-[#F2ECE1] flex items-center justify-between">
-                  {isViewer ? (
-                    <span className="text-[11px] text-[#E65100] font-semibold flex items-center gap-1">
-                      <Lock className="w-3.5 h-3.5" /> View-Only Mode: Editing is disabled
-                    </span>
-                  ) : <span />}
-                  <div className="flex items-center justify-end gap-3">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsCategoryModalOpen(false);
-                        setEditingCategory(null);
-                      }}
-                      className="px-4 py-2 border border-[#DDD5C7] hover:bg-[#FAF8F5] rounded-xl text-xs font-semibold text-[#4A443D] transition-colors cursor-pointer"
-                    >
-                      {isViewer ? 'Close' : 'Cancel'}
-                    </button>
-                    {!isViewer && (
-                      <button
-                        type="submit"
-                        className="px-6 py-2 bg-[#8B2628] hover:bg-[#721E20] text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-colors shadow-xs cursor-pointer"
-                      >
-                        Save Category
-                      </button>
-                    )}
-                  </div>
-                </div>
               </form>
+
+              {/* Modal Actions Sticky Footer */}
+              <div className="p-4 sm:p-5 bg-[#FCFBF8] border-t border-[#F2ECE1] flex items-center justify-between shrink-0">
+                {isViewer ? (
+                  <span className="text-[11px] text-[#E65100] font-semibold flex items-center gap-1">
+                    <Lock className="w-3.5 h-3.5" /> View-Only Mode: Editing is disabled
+                  </span>
+                ) : (
+                  <span className="text-[11px] text-[#7A7369]">
+                    💡 Manage subcategories and banner images
+                  </span>
+                )}
+                <div className="flex items-center justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCategoryModalOpen(false);
+                      setEditingCategory(null);
+                    }}
+                    className="px-4 py-2 border border-[#DDD5C7] hover:bg-[#FAF8F5] rounded-xl text-xs font-semibold text-[#4A443D] transition-colors cursor-pointer"
+                  >
+                    {isViewer ? 'Close' : 'Cancel'}
+                  </button>
+                  {!isViewer && (
+                    <button
+                      type="submit"
+                      form="category-modal-form"
+                      className="px-6 py-2 bg-[#8B2628] hover:bg-[#721E20] text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-colors shadow-xs cursor-pointer"
+                    >
+                      Save Category
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
         </div>
       )}
